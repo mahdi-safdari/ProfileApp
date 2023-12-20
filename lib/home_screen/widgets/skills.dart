@@ -21,7 +21,7 @@ class _SkillsState extends State<Skills> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 32),
+      padding: const EdgeInsets.only(left: 32, right: 24),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
