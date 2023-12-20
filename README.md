@@ -1,6 +1,6 @@
 # profile
 
-A new Flutter project.
+<p align="center"><img src="assets/Screenshot_1.png" /></p>
 
 ## Getting Started
 
