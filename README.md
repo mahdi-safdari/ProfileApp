@@ -1,6 +1,6 @@
 # profile
 
-<p align="center"><img src="assets/Screenshot_1.png" /></p>
+<p align="center"><img src="assets/Screenshot_1.png" /><img src="assets/Screenshot_2.png" /></p>
 
 ## Getting Started
 
