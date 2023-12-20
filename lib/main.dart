@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/core/theme.dart';
 import 'package:profile/home_screen/home_screen.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,14 +19,22 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   ThemeMode themeMode = ThemeMode.dark;
   IconData iconDataTheme = CupertinoIcons.sun_max_fill;
+  Locale _locale = const Locale('en');
   @override
   Widget build(BuildContext context) {
-    const Color surfaceColor = Color(0x0dffffff);
     return MaterialApp(
       title: 'Profile',
-      theme: themeMode == ThemeMode.dark ? MyAppThemeConfig.dark().getThemeData() : MyAppThemeConfig.light().getThemeData(),
       debugShowCheckedModeBanner: false,
+      theme: themeMode == ThemeMode.dark ? MyAppThemeConfig.dark().getThemeData(_locale.languageCode) : MyAppThemeConfig.light().getThemeData(_locale.languageCode),
+      locale: _locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: HomeScreen(
+        selectedLanguageChanged: (Language newSelectLanguage) {
+          setState(() {
+            _locale = newSelectLanguage == Language.en ? const Locale('en') : const Locale('fa');
+          });
+        },
         iconDataTheme: iconDataTheme,
         toggleTheme: () {
           setState(() {

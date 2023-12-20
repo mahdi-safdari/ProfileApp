@@ -3,21 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:profile/home_screen/widgets/heart_icon.dart';
 import 'package:profile/home_screen/widgets/personal_information.dart';
 import 'package:profile/home_screen/widgets/skills.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.toggleTheme, required this.iconDataTheme});
+  const HomeScreen({super.key, required this.toggleTheme, required this.iconDataTheme, required this.selectedLanguageChanged});
   final Function() toggleTheme;
   final IconData iconDataTheme;
+  final Function(Language language) selectedLanguageChanged;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Language _language = Language.en;
+  void _updateSelectedLanguage(Language language) {
+    widget.selectedLanguageChanged(language);
+    setState(() {
+      _language = language;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
     final TextTheme theme = Theme.of(context).textTheme;
+    final AppLocalizations locale = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -29,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(width: 16),
         ],
-        title: const Text('Curriculum Vitae'),
+        title: Text(locale.profileTitle),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -53,19 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Brice Séraphin',
-                          style: theme.titleMedium,
-                        ),
-                        const Text('Product& Product Designer'),
+                        Text(locale.name, style: theme.titleMedium),
+                        const SizedBox(height: 5),
+                        Text(locale.job),
+                        const SizedBox(height: 5),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              CupertinoIcons.location_solid,
-                              size: 16,
-                              color: theme.bodySmall!.color,
-                            ),
-                            Text('Paris, France', style: theme.bodySmall),
+                            Icon(CupertinoIcons.location_solid, size: 16, color: theme.bodySmall!.color),
+                            const SizedBox(width: 3),
+                            Text(locale.location, style: theme.bodySmall),
                           ],
                         ),
                       ],
@@ -78,30 +86,55 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 32, left: 32, bottom: 16),
               child: Text(
-                'Enthusiastic young computer Geek, Freelance Designer in love of independence, I have alot of experience in graphical projects, and always give the best of myself to bring you to success.',
-                style: theme.bodySmall,
+                locale.summary,
+                style: theme.bodySmall!.apply(fontSizeFactor: 1.03),
               ),
             ),
             const Divider(),
             Padding(
-              padding: const EdgeInsets.only(left: 32, top: 16, bottom: 12),
+              padding: const EdgeInsets.fromLTRB(32, 12, 32, 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(locale.selectedLanguage),
+                  CupertinoSlidingSegmentedControl<Language>(
+                      backgroundColor: Theme.of(context).dividerColor,
+                      groupValue: _language,
+                      thumbColor: Theme.of(context).dividerColor.withOpacity(0.15),
+                      children: {
+                        Language.en: Text(locale.enLanguage, style: const TextStyle(fontSize: 14)),
+                        Language.fa: Text(
+                          locale.faLanguage,
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      },
+                      onValueChanged: (value) {
+                        if (value != null) _updateSelectedLanguage(value);
+                      })
+                ],
+              ),
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.only(left: 32, top: 16, bottom: 12, right: 24),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Skills',
+                    locale.skills,
                     style: theme.titleMedium!.copyWith(fontWeight: FontWeight.w900),
                   ),
-                  const Icon(CupertinoIcons.chevron_down, size: 12),
+                  const SizedBox(width: 2),
+                  const Icon(CupertinoIcons.chevron_down, size: 16),
                 ],
               ),
             ),
             const Skills(),
             const Divider(),
             Padding(
-              padding: const EdgeInsets.only(left: 32, top: 16, bottom: 16),
+              padding: const EdgeInsets.only(left: 32, top: 16, bottom: 16, right: 24),
               child: Text(
-                'Personal Information',
+                locale.personalInformation,
                 style: theme.titleMedium!.copyWith(fontWeight: FontWeight.w900),
               ),
             ),
@@ -111,4 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+enum Language {
+  en,
+  fa,
 }

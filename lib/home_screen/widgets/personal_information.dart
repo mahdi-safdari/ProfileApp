@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InformationUser extends StatefulWidget {
   const InformationUser({super.key});
@@ -21,19 +22,21 @@ class _InformationUserState extends State<InformationUser> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations locale = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(32, 0, 16, 32),
       child: Column(
         children: [
           _TextFormFieldGenerator(
             controller: _emailController,
-            hintText: 'Email',
+            hintText: locale.email,
             prefixIcon: CupertinoIcons.at,
           ),
           const SizedBox(height: 12),
           _TextFormFieldGenerator(
             controller: _passwordController,
-            hintText: 'Password',
+            hintText: locale.password,
             prefixIcon: CupertinoIcons.lock,
           ),
           const SizedBox(height: 12),
@@ -41,11 +44,8 @@ class _InformationUserState extends State<InformationUser> {
             width: double.infinity,
             height: 48,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  // backgroundColor: Theme.of(context).primaryColor,
-                  ),
               onPressed: () {},
-              child: Text('Save'),
+              child: Text(locale.save),
             ),
           )
         ],
