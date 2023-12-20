@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyAppThemeConfig {
+  static const String faPrimaryFontFamily = "IranSans";
   final Color primaryColor = Colors.redAccent.shade200;
   final Color primaryTextColor;
   final Color secondaryTextColor;
@@ -26,7 +27,7 @@ class MyAppThemeConfig {
         appBarColor = const Color.fromARGB(255, 235, 235, 235),
         brightness = Brightness.light;
 
-  ThemeData getThemeData() {
+  ThemeData getThemeData(String languageCode) {
     return ThemeData(
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -37,7 +38,6 @@ class MyAppThemeConfig {
         ),
       ),
       brightness: brightness,
-      // scaffoldBackgroundColor: const Color(0xff1e1e1e),
       scaffoldBackgroundColor: backgroundColor,
       primaryColor: primaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -53,16 +53,25 @@ class MyAppThemeConfig {
         backgroundColor: appBarColor,
         surfaceTintColor: Colors.transparent,
       ),
-      textTheme: GoogleFonts.latoTextTheme(
-        TextTheme(
-          bodyMedium: TextStyle(fontSize: 15, color: primaryTextColor),
-          bodySmall: TextStyle(fontSize: 14, color: secondaryTextColor),
-          // bodySmall: TextStyle(fontSize: 14, color: Color.fromARGB(180, 255, 255, 255)),
-          titleLarge: TextStyle(fontWeight: FontWeight.bold, color: primaryTextColor),
-          titleMedium: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: primaryTextColor),
-        ),
-      ),
+      textTheme: languageCode == 'en' ? enPrimaryTextTheme : faPrimaryTextTheme,
       useMaterial3: true,
     );
   }
+
+  TextTheme get enPrimaryTextTheme => GoogleFonts.latoTextTheme(
+        TextTheme(
+          bodyMedium: TextStyle(fontSize: 15, color: primaryTextColor),
+          bodySmall: TextStyle(fontSize: 14, color: secondaryTextColor),
+          titleLarge: TextStyle(fontWeight: FontWeight.bold, color: primaryTextColor),
+          titleMedium: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: primaryTextColor),
+        ),
+      );
+
+  TextTheme get faPrimaryTextTheme => TextTheme(
+        bodyMedium: TextStyle(fontSize: 15, color: primaryTextColor, fontFamily: faPrimaryFontFamily),
+        bodySmall: TextStyle(fontSize: 14, color: secondaryTextColor, fontFamily: faPrimaryFontFamily),
+        titleLarge: TextStyle(fontWeight: FontWeight.bold, color: primaryTextColor, fontFamily: faPrimaryFontFamily),
+        titleMedium: TextStyle(fontWeight: FontWeight.w900, fontSize: 16, color: primaryTextColor, fontFamily: faPrimaryFontFamily),
+        labelLarge: const TextStyle(fontFamily: faPrimaryFontFamily),
+      );
 }
